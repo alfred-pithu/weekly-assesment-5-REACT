@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 
 const SingleTopic = ({ topic, removeDeleteDataFromState, updateStateForUpDownVote }) => {
+
+    const [formattedDate, setFormattedDate] = useState(Date);
 
     // Delete HTTP Request
     const handleDeleteTopic = () => {
@@ -14,18 +16,29 @@ const SingleTopic = ({ topic, removeDeleteDataFromState, updateStateForUpDownVot
     }
 
 
+    // Upvote HTTP Req
     const handleUpVote = () => {
         axios.put(`http://localhost:5000/topics/${topic._id}/up`)
             .then(res => {
                 updateStateForUpDownVote(res.data)
             })
     }
+
+    // Downvote HTTP Req
     const handleDownVote = () => {
         axios.put(`http://localhost:5000/topics/${topic._id}/down`)
             .then(res => {
                 updateStateForUpDownVote(res.data)
             })
     }
+
+    // Formatting the date .  N
+    const formateDate = () => {
+        const stringToDate = new Date(topic.published_at)
+        const formatted = new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short' }).format(stringToDate)
+        setFormattedDate(formatted)
+    }
+
 
     return (
         <div className="mt-10 border py-3 w-2/3 mx-auto my-10 flex justify-between items-center px-5">
@@ -82,7 +95,8 @@ const SingleTopic = ({ topic, removeDeleteDataFromState, updateStateForUpDownVot
                     <h2 className="text-lg">{topic.title}</h2>
                     <p style={{ fontSize: "xx-small" }} className="mt-3">
                         CREATED ON
-                        <span className="font-bold ms-3"></span>
+
+                        <span className="font-bold ms-3"> {new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short' }).format(new Date(topic.published_at))}</span>
 
                     </p>
                 </div>

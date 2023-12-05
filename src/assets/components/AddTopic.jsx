@@ -7,7 +7,7 @@ const AddTopic = ({ addNewTopicToState }) => {
     const handleSubmit = async () => {
         if (inputData) {
             const fullData = {
-                title: inputData,
+                title: inputData.trim(),
                 score: 0,
                 published_at: new Date().toISOString(),
             }
@@ -21,7 +21,7 @@ const AddTopic = ({ addNewTopicToState }) => {
     }
     const handleInput = (event) => {
         event.preventDefault();
-        setInputData(event.target.value.trim());
+        setInputData(event.target.value);
 
     }
 
